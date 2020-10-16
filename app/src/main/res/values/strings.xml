@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Manager Search</string>
+    <string name="manager_search_hint">Search for managers</string>
 </resources>
