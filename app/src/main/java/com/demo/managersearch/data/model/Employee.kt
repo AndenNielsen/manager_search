@@ -7,5 +7,5 @@ import moe.banana.jsonapi2.Resource
 @JsonApi(type = "employees")
 data class Employee(
     var name: String? = null,
-    val account: HasOne<Account>
+    val account: HasOne<Account>? = null
 ) : Resource()

@@ -15,6 +15,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainFragment">
 
+    <EditText
+        android:id="@+id/search_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="16dp"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:onQueryChange="@{viewModel.query}" />
+
     <TextView
         android:id="@+id/message"
         android:layout_width="wrap_content"
