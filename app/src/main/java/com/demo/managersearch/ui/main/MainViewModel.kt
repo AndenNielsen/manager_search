@@ -8,10 +8,18 @@ import androidx.lifecycle.viewModelScope
 import com.demo.managersearch.data.ManagerSearchRepository
 import com.demo.managersearch.data.model.Employee
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class MainViewModel(private val repository: ManagerSearchRepository) : ViewModel() {
+
+    private val _items = MutableLiveData<List<ManagerSearchListItemViewModel>>()
+    val items: LiveData<List<ManagerSearchListItemViewModel>> get() = _items
+
     val query = MutableStateFlow("")
 
     init {
@@ -36,6 +44,7 @@ class MainViewModel(private val repository: ManagerSearchRepository) : ViewModel
                     .onStart { /* //todo set loading state? */ }
                     .onCompletion { /* //todo remove loading state? */ }
                     .catch { exception ->
+                        _items.postValue(emptyList())
                         Log.e(
                             this@MainViewModel.javaClass.simpleName,
                             "error: $exception",
@@ -46,23 +55,28 @@ class MainViewModel(private val repository: ManagerSearchRepository) : ViewModel
                         response.filter {
                             val email = it.account?.get(it.document)?.email ?: ""
                             val name = it.name ?: ""
-                            return@filter name.contains(query) || email.contains(query)
-                        }.map { it.toUIModel() }
+                            return@filter name.contains(query, ignoreCase = true) || email.contains(
+                                query,
+                                ignoreCase = true
+                            )
+                        }.map {
+                            it.toUIModel()
+                        }
                     }
             }
             .collect { result ->
-                Log.d(this@MainViewModel.javaClass.simpleName, "result: $result")
                 _items.postValue(result)
             }
     }
-
-    private val _items = MutableLiveData<List<ManagerSearchListItemViewModel>>()
-    val items: LiveData<List<ManagerSearchListItemViewModel>> get() = _items
 
     private fun Employee.toUIModel() =
         ManagerSearchListItemViewModel(
             id = this.id,
             name = this.name ?: "",
-            email = this.account?.get(this.document)?.email ?: ""
+            email = this.account?.get(this.document)?.email ?: "",
+            businessUnit = this.businessUnit ?: "",
+            department = this.department ?: "",
+            jobLevel = this.jobLevel ?: "",
+            localOffice = this.localOffice ?: ""
         )
 }

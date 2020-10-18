@@ -19,7 +19,6 @@
         android:id="@+id/search_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawablePadding="16dp"
         android:importantForAutofill="no"
         android:inputType="text"
         android:padding="16dp"

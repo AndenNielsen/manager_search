@@ -8,6 +8,8 @@ import com.demo.managersearch.data.model.Employee
 import com.demo.managersearch.ui.main.MainViewModel
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import moe.banana.jsonapi2.JsonApiConverterFactory
 import moe.banana.jsonapi2.ResourceAdapterFactory
 import okhttp3.OkHttpClient
@@ -17,6 +19,8 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 val appModule = module {
     single<ManagerSearchRepository> { ManagerSearchRepositoryImpl(get()) }
     factory { provideManagerSearchAPI(get()) }
