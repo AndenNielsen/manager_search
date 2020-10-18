@@ -10,13 +10,13 @@ import org.koin.core.logger.Level
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class SearchManagerApplication : Application() {
+class ManagerSearchApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
         startKoin {
             androidLogger(Level.ERROR)
-            androidContext(this@SearchManagerApplication)
+            androidContext(this@ManagerSearchApplication)
             modules(listOf(appModule))
         }
     }
