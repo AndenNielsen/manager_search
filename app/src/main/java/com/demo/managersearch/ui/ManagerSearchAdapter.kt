@@ -1,4 +1,4 @@
-package com.demo.managersearch.ui.main
+package com.demo.managersearch.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

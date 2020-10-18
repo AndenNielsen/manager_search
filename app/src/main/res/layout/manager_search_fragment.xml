@@ -7,23 +7,24 @@
 
         <variable
             name="viewModel"
-            type="com.demo.managersearch.ui.main.MainViewModel" />
+            type="com.demo.managersearch.ui.ManagerSearchViewModel" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.MainFragment">
 
-    <EditText
-        android:id="@+id/search_field"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:padding="16dp"
-        android:hint="@string/manager_search_hint"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.ManagerSearchFragment">
+
+        <EditText
+            android:id="@+id/search_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:padding="16dp"
+            android:hint="@string/manager_search_hint"
+            app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:onQueryChange="@{viewModel.query}" />

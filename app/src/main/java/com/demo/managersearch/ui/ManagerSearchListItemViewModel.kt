@@ -1,4 +1,4 @@
-package com.demo.managersearch.ui.main
+package com.demo.managersearch.ui
 
 data class ManagerSearchListItemViewModel(
     val id: String,

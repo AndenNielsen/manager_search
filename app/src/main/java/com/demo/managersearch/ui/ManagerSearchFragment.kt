@@ -1,4 +1,4 @@
-package com.demo.managersearch.ui.main
+package com.demo.managersearch.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.demo.managersearch.R
-import com.demo.managersearch.databinding.MainFragmentBinding
+import com.demo.managersearch.databinding.ManagerSearchFragmentBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -17,23 +17,23 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalCoroutinesApi
 @FlowPreview
-class MainFragment : Fragment() {
+class ManagerSearchFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = ManagerSearchFragment()
     }
 
     private lateinit var adapter: ManagerSearchAdapter
-    private val viewModel: MainViewModel by viewModel()
+    private val viewModel: ManagerSearchViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding: MainFragmentBinding =
+        val binding: ManagerSearchFragmentBinding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.main_fragment, container, false
+                R.layout.manager_search_fragment, container, false
             )
         binding.viewModel = viewModel
 

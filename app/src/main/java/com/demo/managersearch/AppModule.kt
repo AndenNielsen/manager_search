@@ -5,7 +5,7 @@ import com.demo.managersearch.data.ManagerSearchRepositoryImpl
 import com.demo.managersearch.data.api.ManagerSearchAPI
 import com.demo.managersearch.data.model.Account
 import com.demo.managersearch.data.model.Employee
-import com.demo.managersearch.ui.main.MainViewModel
+import com.demo.managersearch.ui.ManagerSearchViewModel
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,7 +28,7 @@ val appModule = module {
     factory { provideOkHttpClient() }
     single { provideRetrofit(get()) }
 
-    viewModel { MainViewModel(get()) }
+    viewModel { ManagerSearchViewModel(get()) }
 
 }
 

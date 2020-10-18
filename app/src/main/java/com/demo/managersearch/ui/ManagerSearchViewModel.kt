@@ -1,4 +1,4 @@
-package com.demo.managersearch.ui.main
+package com.demo.managersearch.ui
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class MainViewModel(private val repository: ManagerSearchRepository) : ViewModel() {
+class ManagerSearchViewModel(private val repository: ManagerSearchRepository) : ViewModel() {
 
     private val _items = MutableLiveData<List<ManagerSearchListItemViewModel>>()
     val items: LiveData<List<ManagerSearchListItemViewModel>> get() = _items
@@ -46,7 +46,7 @@ class MainViewModel(private val repository: ManagerSearchRepository) : ViewModel
                     .catch { exception ->
                         _items.postValue(emptyList())
                         Log.e(
-                            this@MainViewModel.javaClass.simpleName,
+                            this@ManagerSearchViewModel.javaClass.simpleName,
                             "error: $exception",
                             exception
                         )
