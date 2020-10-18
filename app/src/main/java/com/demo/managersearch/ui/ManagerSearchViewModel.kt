@@ -24,11 +24,11 @@ class ManagerSearchViewModel(private val repository: ManagerSearchRepository) : 
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            getRepositoriesByQuery()
+            getManagerssByQuery()
         }
     }
 
-    private suspend fun getRepositoriesByQuery() {
+    private suspend fun getManagerssByQuery() {
         query.debounce(300)
             .filter { query ->
                 if (query.isEmpty()) {

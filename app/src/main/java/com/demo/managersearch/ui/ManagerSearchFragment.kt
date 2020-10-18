@@ -50,11 +50,7 @@ class ManagerSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.items.observe(viewLifecycleOwner, {
-            it.let {
-                adapter.submitList(it)
-            }
-        })
+        viewModel.items.observe(viewLifecycleOwner, { adapter.submitList(it) })
     }
 
 }

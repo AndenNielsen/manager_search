@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 interface ManagerSearchRepository {
-    suspend fun getEmployeesByQuery(query: String): Flow<List<Employee>>
+    suspend fun getEmployeesByQuery(query: String = ""): Flow<List<Employee>>
 }
 
 class ManagerSearchRepositoryImpl(private val api: ManagerSearchAPI) :
