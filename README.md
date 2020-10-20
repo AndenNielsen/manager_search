@@ -10,8 +10,9 @@ Based on a MVVM architecture useing Courotines, Flow and LiveData
 - moshi-jsonapi for json:api deserialization
 
 # Assumptions
-I am assuming the app would leverage a Rest Api that would accept a query parameter. For this solution it adds an extra needed filter when requesting the json file - as it is static in this sample.
-An alternative solution could be to load the file once and then do the filtring on that list of items when typing (solution provided in ManagerSearchStaticFileViewModel.kt)
+I am assuming the app ideally would leverage a Rest Api that would accept a query parameter. For this sample solution it adds an extra needed filter when requesting the json file - as it is static in this sample.
+However - As the JSON for this sample app is static - my solution will load the json file once when the viewmodel is initialized and then do the filtring on that list of items when typing.
+A solution for querying a Rest Api when typing is provided in ManagerSearchWithQueryViewModel.kt
 
 # Installation
 clone the repository to your local machine and import it in Android Studio. Hit the green play button in Android Studio - that will build the app and deploy it to your emulator/device.
