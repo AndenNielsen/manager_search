@@ -12,10 +12,8 @@ import kotlinx.coroutines.launch
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class ManagerSearchViewModel(private val repository: ManagerSearchRepository) :
+class ManagerSearchWithQueryViewModel(private val repository: ManagerSearchRepository) :
     ViewModel() {
-
-    private var allItems = listOf<ManagerSearchListItemViewModel>()
 
     private val _items = MutableLiveData<List<ManagerSearchListItemViewModel>>()
     val items: LiveData<List<ManagerSearchListItemViewModel>> get() = _items
@@ -33,47 +31,44 @@ class ManagerSearchViewModel(private val repository: ManagerSearchRepository) :
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getEmployeesByQuery()
-                .onStart { isLoading.postValue(true) }
-                .onCompletion {
-                    isLoading.postValue(false)
-                    getManagersByQuery()
-                }
-                .catch { exception ->
-                    allItems = emptyList()
-                    Log.e(
-                        this@ManagerSearchViewModel.javaClass.simpleName,
-                        "error: $exception",
-                        exception
-                    )
-                }
-                .map { response ->
-                    response.map {
-                        it.toUIModel()
-                    }
-                }
-                .collect { result ->
-                    allItems = result
-                }
+            getManagersByQuery()
         }
     }
 
     private suspend fun getManagersByQuery() {
-        query.filter { query ->
-            if (query.isEmpty()) {
-                _items.postValue(emptyList())
-                return@filter false
-            } else {
-                return@filter true
-            }
-        }
-            .map { query ->
-                allItems.filter {
-                    return@filter it.name.contains(query, ignoreCase = true) || it.email.contains(
-                        query,
-                        ignoreCase = true
-                    )
+        query.debounce(300)
+            .filter { query ->
+                if (query.isEmpty()) {
+                    _items.postValue(emptyList())
+                    return@filter false
+                } else {
+                    return@filter true
                 }
+            }
+            .flatMapLatest { query ->
+                repository.getEmployeesByQuery(query)
+                    .onStart { isLoading.postValue(true) }
+                    .onCompletion { isLoading.postValue(false) }
+                    .catch { exception ->
+                        emit(emptyList())
+                        Log.e(
+                            this@ManagerSearchWithQueryViewModel.javaClass.simpleName,
+                            "error: $exception",
+                            exception
+                        )
+                    }
+                    .map { response ->
+                        response.filter {
+                            val email = it.account?.get(it.document)?.email ?: ""
+                            val name = it.name ?: ""
+                            return@filter name.contains(query, ignoreCase = true) || email.contains(
+                                query,
+                                ignoreCase = true
+                            )
+                        }.map {
+                            it.toUIModel()
+                        }
+                    }
             }
             .collect { result ->
                 _items.postValue(result)

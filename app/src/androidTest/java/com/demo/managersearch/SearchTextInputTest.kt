@@ -30,6 +30,7 @@ class SearchTextInputTest {
     @Test
     fun testSearchInputText() {
 
+        Thread.sleep(2000) // todo mock repository instead
         onView(withId(R.id.search_field)).perform(click())
         onView(withId(R.id.search_field)).perform(typeText("ha"))
         Thread.sleep(2000) // todo mock repository instead
