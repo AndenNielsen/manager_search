@@ -36,6 +36,7 @@ class ManagerSearchFragment : Fragment() {
                 R.layout.manager_search_fragment, container, false
             )
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         adapter = ManagerSearchAdapter()
         binding.managerList.adapter = adapter

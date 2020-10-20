@@ -1,10 +1,7 @@
 package com.demo.managersearch.ui
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.demo.managersearch.data.ManagerSearchRepository
 import com.demo.managersearch.data.model.Employee
 import kotlinx.coroutines.Dispatchers
@@ -22,13 +19,22 @@ class ManagerSearchViewModel(private val repository: ManagerSearchRepository) : 
 
     val query = MutableStateFlow("")
 
+    val isLoading = MutableLiveData(false)
+
+    val emptyStateVisibility: LiveData<Boolean> =
+        Transformations.switchMap(_items) { itemList ->
+            Transformations.map(isLoading) { isLoading ->
+                !isLoading && itemList.isEmpty() && query.value.isNotEmpty()
+            }
+        }
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            getManagerssByQuery()
+            getManagersByQuery()
         }
     }
 
-    private suspend fun getManagerssByQuery() {
+    private suspend fun getManagersByQuery() {
         query.debounce(300)
             .filter { query ->
                 if (query.isEmpty()) {
@@ -41,8 +47,7 @@ class ManagerSearchViewModel(private val repository: ManagerSearchRepository) : 
             .distinctUntilChanged()
             .flatMapLatest { query ->
                 repository.getEmployeesByQuery(query)
-                    .onStart { /* //todo set loading state? */ }
-                    .onCompletion { /* //todo remove loading state? */ }
+                    .onStart { isLoading.postValue(true) }
                     .catch { exception ->
                         _items.postValue(emptyList())
                         Log.e(
@@ -66,6 +71,7 @@ class ManagerSearchViewModel(private val repository: ManagerSearchRepository) : 
             }
             .collect { result ->
                 _items.postValue(result)
+                isLoading.postValue(false)
             }
     }
 

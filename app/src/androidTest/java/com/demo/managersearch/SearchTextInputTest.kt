@@ -8,10 +8,11 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,6 +38,7 @@ class SearchTextInputTest {
         onView(withId(R.id.search_field)).perform(clearText())
         Thread.sleep(2000) // todo mock repository instead
         onView(withId(R.id.manager_list)).check(RecyclerViewItemCountAssertion(0))
+        onView(withId(R.id.empty_state_text)).check(matches(not(isDisplayed())))
 
         onView(withId(R.id.search_field)).perform(typeText("Ha"))
         Thread.sleep(2000) // todo mock repository instead
@@ -49,6 +51,7 @@ class SearchTextInputTest {
         onView(withId(R.id.search_field)).perform(replaceText("some random long name"))
         Thread.sleep(2000) // todo mock repository instead
         onView(withId(R.id.manager_list)).check(RecyclerViewItemCountAssertion(0))
+        onView(withId(R.id.empty_state_text)).check(matches(isDisplayed()))
 
     }
 }
