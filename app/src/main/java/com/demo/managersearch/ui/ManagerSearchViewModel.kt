@@ -40,7 +40,7 @@ class ManagerSearchViewModel(private val repository: ManagerSearchRepository) :
                     getManagersByQuery()
                 }
                 .catch { exception ->
-                    allItems = emptyList()
+                    emit(emptyList())
                     Log.e(
                         this@ManagerSearchViewModel.javaClass.simpleName,
                         "error: $exception",
